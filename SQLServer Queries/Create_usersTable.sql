@@ -1,0 +1,1 @@
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='usersTable' and xtype='U') CREATE TABLE usersTable (name varchar(128)  NOT NULL, email varchar(45) NOT NULL, password varchar(30) NOT NULL, CONSTRAINT user_pk PRIMARY KEY(email));

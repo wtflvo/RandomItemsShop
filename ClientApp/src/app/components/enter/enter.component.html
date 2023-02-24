@@ -1,0 +1,52 @@
+<div class="login-container">
+  <div class="header-container">
+    <h1>Login</h1>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="enterForm" (ngSubmit)="submit()">
+      <div class="personal-data-container">
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="addEmail" />
+            <mat-error *ngIf="enterForm.hasError('required', 'addEmail')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="enterForm.hasError('minlength', 'addEmail')">
+              Email must be at least 5 char
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="text" formControlName="addPassword" />
+            <mat-error *ngIf="enterForm.hasError('required', 'addPassword')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="enterForm.hasError('minlength', 'addPassword')">
+              Password must be at least 3 char
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="btn-container btn-login-container">
+        <button
+          class="btn-login btn"
+          type="submit"
+          [disabled]="!enterForm.valid"
+          mat-raised-button
+        >
+          Login
+        </button>
+      </div>
+    </form>
+    <div *ngIf="invalidLogin == 'yes'" class="line">
+      <h5 class="response-message lineUp red">Invalid username or password.</h5>
+    </div>
+    <div class="line" *ngIf="invalidLogin == 'no'">
+      <h4 class="response-message lineUp green">Login accepted!</h4>
+    </div>
+  </div>
+</div>

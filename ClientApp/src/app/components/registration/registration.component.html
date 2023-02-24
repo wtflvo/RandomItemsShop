@@ -1,0 +1,84 @@
+<div class="add-contact-container">
+  <div class="header-container">
+    <h1>Registrate new user</h1>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="newUserForm" (ngSubmit)="submit()">
+      <div class="personal-data-container">
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Name </mat-label>
+            <input matInput type="text" formControlName="addName" />
+            <mat-error *ngIf="newUserForm.hasError('required', 'addName')">
+              Name is required
+            </mat-error>
+            <mat-error *ngIf="newUserForm.hasError('minlength', 'addName')">
+              Name must be at least 3 char
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="addEmail" />
+            <mat-error *ngIf="newUserForm.hasError('required', 'addEmail')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="newUserForm.hasError('minlength', 'addEmail')">
+              Email must be at least 5 char
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="text" formControlName="addPassword" />
+            <mat-error *ngIf="newUserForm.hasError('required', 'addPassword')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="newUserForm.hasError('minlength', 'addPassword')">
+              Password must be at least 3 char
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Repeat password</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="repeatPassword"
+              [errorStateMatcher]="matcher"
+            />
+            <mat-error
+              *ngIf="newUserForm.hasError('required', 'repeatPassword')"
+            >
+              Repeating of password is required
+            </mat-error>
+            <mat-error *ngIf="newUserForm.hasError('notSame')">
+              Passwords do not match
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button
+          class="btn"
+          type="submit"
+          [disabled]="!newUserForm.valid"
+          mat-raised-button
+        >
+          Registration
+        </button>
+      </div>
+    </form>
+    <div *ngIf="responseMessage == 'User already exists'" class=" line">
+      <h5 class="response-message lineUp red">User with such email already exists</h5>
+    </div>
+    <div class=" line" *ngIf="responseMessage == 'Sign up successfull!'">
+      <h4 class="response-message lineUp green">{{ responseMessage }}</h4>
+    </div>
+  </div>
+</div>

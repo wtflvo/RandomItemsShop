@@ -1,0 +1,131 @@
+<div *ngIf="isUserAuthenticated()">
+  <p>You are logged in</p>
+  <button
+    class="logout-btn"
+    mat-raised-button
+    matTooltip="Log out from website"
+    matTooltipPosition="below"
+    aria-label="Button witj tooltip"
+    (click)="logOut()"
+  >
+    Logout
+  </button>
+</div>
+
+<div class="info-container">
+  <div class="header-container"><h1>Random Items Shop</h1></div>
+
+  <div class="content-container">
+    <div class="search-container">
+      <form (submit)="handleSearch()">
+        <mat-form-field appearance="outline" class="mat-input-wrapper">
+          <mat-label>Search</mat-label>
+          <input
+            type="text"
+            placeholder="Search"
+            aria-label="Item"
+            class="mat-input-wrapper"
+            matInput
+            [formControl]="searchControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button type="submit" class="search-btn" mat-button>
+          Search
+          <img src="./assets/search.png" alt="search" class="search-img" />
+        </button>
+      </form>
+    </div>
+
+    <div class="not-auth-container" *ngIf="!isUserAuthenticated()">
+      <h4>Please, enter to your account</h4>
+      <app-animated-placeholder></app-animated-placeholder>
+    </div>
+
+    <div *ngIf="isUserAuthenticated()" class="main-box">
+      <div>
+        <h3>Categories:</h3>
+        <div>
+          <mat-button-toggle-group
+            name="category"
+            [formControl]="categoryControl"
+            aria-label="category"
+            [vertical]="true"
+            (change)="handleCategory($event.value)"
+          >
+            <mat-button-toggle value="all">All categories</mat-button-toggle>
+            <mat-button-toggle value="men's clothing"
+              >Men's clothing</mat-button-toggle
+            >
+            <mat-button-toggle value="women's clothing"
+              >Women's clothing</mat-button-toggle
+            >
+            <mat-button-toggle value="jewelery">Jewelery</mat-button-toggle>
+            <mat-button-toggle value="electronics"
+              >Electronics</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </div>
+      </div>
+      <div>
+        <div *ngIf="lastSearch">
+          <h5>Search results for "{{ lastSearch }}": {{ itemsQuantity }}</h5>
+        </div>
+
+        <div class="grid-content">
+          <div *ngFor="let item of filteredShopItems">
+            <mat-card class="child">
+              <mat-card-header>
+                <mat-card-subtitle>
+                  Category:{{ item.category }}
+                </mat-card-subtitle>
+                <mat-card-title>{{ item.title }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content class="row card-content">
+                <div class="img-content">
+                  <img
+                    mat-card-sm-image
+                    src="{{ item.image }}"
+                    class="item-image col-12 col-sm-12 col-md-6 col-lg-6"
+                    alt="item"
+                  />
+                  <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <mat-card-subtitle class="col-12 text-modify"
+                      >Price: {{ item.price }}$</mat-card-subtitle
+                    >
+                    <mat-card-subtitle class="col-12 text-modify"
+                      >Items left: {{ item.count }}</mat-card-subtitle
+                    >
+                  </div>
+                </div>
+                <div class="description-box">
+                  <p class="text-short">{{ item.description }}</p>
+                </div>
+              </mat-card-content>
+              <mat-divider></mat-divider>
+              <mat-card-footer> </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+        <div class="paginator">
+          <mat-paginator
+            #paginator
+            [length]="this.itemsQuantity"
+            [pageSize]="this.itemsQuantity > 6 ? 6 : this.itemsQuantity"
+            (page)="onPaginateChange($event)"
+            aria-label="Select page"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
